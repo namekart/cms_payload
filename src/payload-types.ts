@@ -172,6 +172,7 @@ export interface Media {
  */
 export interface Article {
   id: number;
+  publishedAt?: string | null;
   title: string;
   slug: string;
   type: 'domain-sales' | 'funding';
@@ -321,6 +322,7 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "articles_select".
  */
 export interface ArticlesSelect<T extends boolean = true> {
+  publishedAt?: T;
   title?: T;
   slug?: T;
   type?: T;

@@ -12,7 +12,25 @@ export const Articles: CollectionConfig = {
   access: {
     read: () => true,
   },
+  hooks: {
+    beforeChange: [
+      ({ data, originalDoc }) => {
+        if (data._status === 'published' && !originalDoc?.publishedAt) {
+          data.publishedAt = new Date().toISOString()
+        }
+        return data
+      },
+    ],
+  },
   fields: [
+    {
+      name: 'publishedAt',
+      type: 'date',
+      admin: {
+        readOnly: true,
+        position: 'sidebar',
+      },
+    },
     {
       name: 'title',
       type: 'text',
