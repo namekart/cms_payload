@@ -1,18 +1,4 @@
 services:
-  migrate:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: builder
-    environment:
-      DATABASE_URL: postgres://payload:${POSTGRES_PASSWORD:?}@postgres:5432/payload
-      PAYLOAD_SECRET: ${PAYLOAD_SECRET:?}
-    command: ['npx', 'payload', 'migrate']
-    depends_on:
-      postgres:
-        condition: service_healthy
-    restart: 'no'
-
   payload:
     build:
       context: .
@@ -22,8 +8,8 @@ services:
       PAYLOAD_SECRET: ${PAYLOAD_SECRET:?}
       SERVICE_FQDN_PAYLOAD: 3000
     depends_on:
-      migrate:
-        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
     volumes:
       - media:/app/media
     restart: unless-stopped
